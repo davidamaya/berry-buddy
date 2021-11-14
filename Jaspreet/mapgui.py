@@ -18,13 +18,13 @@ def AddmarkWindow():
             longitude_info = longitude.get()
             
             file = open("berryname.txt","a+")  
-            file.write(Markername_info)
+            file.write(Markername_info + "\n")
             file.close()
             file = open("berrylat.txt","a+")  
-            file.write(str(latitude_info))
+            file.write(str(latitude_info) + "\n")
             file.close()
             file = open("berrylong.txt","a+")  
-            file.write(str(longitude_info))
+            file.write(str(longitude_info) + "\n")
             file.close()
             amwind.destroy()
             
