@@ -133,30 +133,28 @@ class IdentifyPage(tk.Frame):
         tk.Frame.__init__(self, parent, bg="#e2c7d8")
         self.controller = controller
         
-        btnspace(self)
-         
-        logo_photo = tk.PhotoImage(file='berrylogo.gif')
-        logo_photo_label = tk.Label(self,image=logo_photo, bg="#e2c7d8")
-        logo_photo_label.pack()
-        logo_photo_label.image = logo_photo
         
-        space(self)
+        label_frame = tk.Frame(self,bg="#95658B")
+        label_frame.pack(fill='both',expand=True)
         
-        test_label = tk.Label(self, text='This is the Identify page', font=('orbitron',13), fg='black', bg='#e2c7d8', anchor='w')
-        test_label.pack(fill='x')
-        
-        space(self)
-        
+        #Put your code here with label_frame. Take test 1 out 
+        test1 = tk.Label(
+            label_frame, text="This is the identify page.")
+        test1.grid(row=1, column=2, sticky=N)
+        label_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+
         button_frame = tk.Frame(self, bg="#95658B")
         button_frame.pack(fill='both',expand=True)
-#Put your code here
-        
         def back():
             controller.show_frame('PageOne')
         
-        home_button = tk.Button(button_frame, text='Home', command=back, highlightbackground="pink", foreground="black")
-        home_button.grid(row=5,column=5,padx=5)
+        home_button = tk.Button(button_frame, text='Home', command=back, highlightbackground="#e2c7d8", foreground="black")
         
+        button1 = Button(button_frame, text="Homepage", width=8,
+                         highlightbackground="pink", foreground="black", command=back)
+        home_button.grid(row=2, column=6, sticky=tk.S)
+        button_frame.place(relx=1, rely=1, anchor=tk.SE)
         
 class MapPage(tk.Frame):
     
@@ -164,29 +162,26 @@ class MapPage(tk.Frame):
         tk.Frame.__init__(self, parent, bg="#e2c7d8")
         self.controller = controller
         
-        btnspace(self)
-         
-        logo_photo = tk.PhotoImage(file='berrylogo.gif')
-        logo_photo_label = tk.Label(self,image=logo_photo, bg="#e2c7d8")
-        logo_photo_label.pack()
-        logo_photo_label.image = logo_photo
+        label_frame = tk.Frame(self,bg="#95658B")
+        label_frame.pack(fill='both',expand=True)
         
-        space(self)
-        
-        
-        test2_label = tk.Label(self, text='This is the Map page', font=('orbitron',13), fg='black', bg='#e2c7d8', anchor='w')
-        test2_label.pack(fill='x')
-        
-        space(self)
-        
+        #Put your code here with label_frame. Take test 1 out 
+        test1 = tk.Label(
+            label_frame, text="This is the Map page")
+        test1.grid(row=1, column=2, sticky=N)
+        label_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
         button_frame = tk.Frame(self, bg="#95658B")
         button_frame.pack(fill='both',expand=True)
-#Put your code here
         def back():
             controller.show_frame('PageOne')
         
-        home_button = tk.Button(button_frame, text='Home', command=back, highlightbackground="pink", foreground="black")
-        home_button.grid(row=5,column=5,padx=5)
+        home_button = tk.Button(button_frame, text='Home', command=back, highlightbackground="#e2c7d8", foreground="black")
+        
+        button1 = Button(button_frame, text="Homepage", width=8,
+                         highlightbackground="pink", foreground="black", command=back)
+        home_button.grid(row=2, column=6, sticky=tk.S)
+        button_frame.place(relx=1, rely=1, anchor=tk.SE)
         
 class CatalogPage(tk.Frame):
     
@@ -194,17 +189,26 @@ class CatalogPage(tk.Frame):
         tk.Frame.__init__(self, parent, bg="#e2c7d8")
         self.controller = controller
   
-        space(self)
+        label_frame = tk.Frame(self,bg="#95658B")
+        label_frame.pack(fill='both',expand=True)
         
+        #Put your code here with label_frame. Take test 1 out 
+        test1 = tk.Label(
+            label_frame, text="This is the Catalog page")
+        test1.grid(row=1, column=2, sticky=N)
+        label_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
         button_frame = tk.Frame(self, bg="#95658B")
         button_frame.pack(fill='both',expand=True)
-#Put your code here
         def back():
             controller.show_frame('PageOne')
         
-        home_button = tk.Button(button_frame, text='Home', command=back, highlightbackground="pink", foreground="black")
-        home_button.grid(row=5,column=5,padx=5)
+        home_button = tk.Button(button_frame, text='Home', command=back, highlightbackground="#e2c7d8", foreground="black")
         
+        button1 = Button(button_frame, text="Homepage", width=8,
+                         highlightbackground="pink", foreground="black", command=back)
+        home_button.grid(row=2, column=6, sticky=tk.S)
+        button_frame.place(relx=1, rely=1, anchor=tk.SE)
 
 
 if __name__ == "__main__":
