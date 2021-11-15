@@ -1,6 +1,7 @@
 import tkinter as tk
-from tkinter.constants import END, N, S
+from tkinter.constants import BOTH, BOTTOM, END, LEFT, N, RIGHT, S, TOP, VERTICAL, Y
 import sqlite3
+from tkinter import Canvas, Grid, ttk
 
 #root window
 window = tk.Tk()
@@ -125,16 +126,28 @@ def ListWindow():
     listmarker()   
     print_records
     lmwind = tk.Toplevel(window)
-    lmwind.resizable(False, False)
+  
     lmwind.title("List")
     lmwind.configure(bg='#E2C7D8')
-    lmwind.geometry("210x230")
-    Markerlist_text = tk.Label(lmwind, text="Marker List",bg='#E2C7D8')
-    Markerlist_text.grid(column=1,row=0, padx=45, pady=5)
-  
-    Markerlist = tk.Label(lmwind, text=print_records,bg='white')
-    Markerlist.grid(column=1,row=1, padx=45, pady=5)
-  
+    lmwind.geometry("400x350")
+   
+    my_mainframe=tk.Frame(lmwind)
+    my_mainframe.pack(fill=BOTH, expand=1)
+    my_canvas = tk.Canvas(my_mainframe,bg='white', highlightbackground= "#95658B", highlightthickness= 4)
+    my_canvas.pack(side=LEFT, fill= BOTH, expand=1 )
+    my_scrollbar=ttk.Scrollbar(my_mainframe, orient=VERTICAL, command=my_canvas.yview)
+    my_scrollbar.pack(side=RIGHT, fill=Y)
+    my_canvas.configure(yscrollcommand=my_scrollbar.set)
+    my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion=my_canvas.bbox("all")))
+    
+    Listframe=tk.Frame(my_canvas, bg='white')
+    Listframe.pack()
+    Markerlist_text = tk.Label(Listframe, text="Marker List",bg='white')
+    Markerlist_text.pack()
+    Markerlist = tk.Label(Listframe, text=print_records, bg="white")
+    Markerlist.pack()
+    my_canvas.create_window((0,0), window = Listframe, anchor="nw")
+    
 #map buttons
 AddMarker = tk.Button(window, width=11, height=1, bg='#E2C7D8', text="Add Marker", command = AddmarkWindow)
 AddMarker.grid(column=0, row=0, padx=10, pady=5) 
