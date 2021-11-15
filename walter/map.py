@@ -22,3 +22,4 @@ def createMap(filename_wo_extension, center=None, zoom=None, imgsize="500x500", 
     request += "key=AIzaSyCz2WexsSRoX06wi7nkEqT1omuoWN4Pji4&"
     response = requests.get(request)
     Image.open(BytesIO(response.content)).convert('RGB').save(filename_wo_extension + "." + imgformat)
+    Image.show()
