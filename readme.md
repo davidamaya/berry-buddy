@@ -16,9 +16,9 @@ California’s wilderness is home to a diverse range of berries. There are too m
 BerryBuddy will utilize machine learning libraries in Python to train a neural net to identify and differentiate between the various berries endemic to California. Our program should then be able to identify berries in user-provided images, and relay relevant information. BerryBuddy will additionally be able to extract geolocation data from a user’s image and map the berries’ location on a map for future reference; diminishing the need for users to continuously take images of the same berry bush. If that data is not available, the user will also have the option to manually input that information, and add their own markers. Our program will also serve as a reference book, and will contain a catalog of all the berries commonly found in California, highlighting their identifying features. 
 
 ## Libraries and Sources
-Tkinter
-PIL
-Keras
-Tensorflow
-SQLite3
+Tkinter,
+PIL,
+Keras,
+Tensorflow,
+SQLite3,
 NumPy
