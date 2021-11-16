@@ -151,6 +151,7 @@ class IdentifyPage(tk.Frame):
             for img_display in label_frame.winfo_children():
                 img_display.destroy()
 
+            # Open file dialog box
             image_data = filedialog.askopenfilename(initialdir="/", title="Choose an image",
                                        filetypes=(("all files", "*.*"), ("png files", "*.png")))
             basewidth = 150
@@ -160,24 +161,30 @@ class IdentifyPage(tk.Frame):
             img = img.resize((basewidth, hsize), Image.ANTIALIAS)
             img = ImageTk.PhotoImage(img)
             file_name = image_data.split('/')
+
+            # Print file name onto page
             panel = tk.Label(label_frame, text= str(file_name[len(file_name)-1]).upper()).pack()
+
+            # Print image onto page
             panel_image = tk.Label(label_frame, image=img).pack()
 
             classify()
 
         def classify():
 
-            np.set_printoptions(suppress=True)
-
+            # Load neural net model
             model = load_model('keras_model.h5')
 
+            # Place classs names into array from labels.txt
             with open('labels.txt', 'r') as f:
                 class_names = f.read().split('\n')
 
             data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 
+            # Load berry image into variable
             berry_image = Image.open(image_data)
 
+            # Normaliize the size of the photo into a 224x224 grid
             size = (224, 224)
             berry_image = ImageOps.fit(berry_image, size, Image.ANTIALIAS)
 
@@ -187,10 +194,13 @@ class IdentifyPage(tk.Frame):
 
             data[0] = normalized_image_array
 
+            # Run normalized image through trained model
             prediction = model.predict(data)
 
             index = np.argmax(prediction)
             class_name = class_names[index]
+
+            # Print classification report onto page
             result = tk.Label(label_frame, text=class_name).pack()
 
             
