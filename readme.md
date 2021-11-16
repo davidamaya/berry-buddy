@@ -1,7 +1,5 @@
 # Term Project - *BerryBuddy*
 
-**BerryBuddy** is a desktop application that allows ...
-
 Submitted by: **Jeffin Abraham,David Alvarado Amaya, Sunshine Moua, Jaspreet Nijjar**
 
 Time spent: **4** months spent in total
