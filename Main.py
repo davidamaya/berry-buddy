@@ -10,6 +10,14 @@ import numpy as np
 from tkinter import ttk
 import sqlite3 as sl
 
+"""Authorship
+Jeffin: Worked on Outline, transition between pages, and classes (BerryApp, PageOne, IdentifyPage, MapPage, CatalogPag) 
+David: Worked on Identify, trained and implemented the model
+Sunshine: Worked on Catalog and DB
+Jaspreet: Worked on Map and DB"""
+
+
+#Jeffin code start
 class BerryApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
@@ -507,3 +515,4 @@ class CatalogPage(tk.Frame):
 if __name__ == "__main__":
     app = BerryApp()
     app.mainloop()
+#jeffin code ends
