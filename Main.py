@@ -137,7 +137,7 @@ class PageOne(tk.Frame):
         button_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
         
 
-
+# David's Code Start
 class IdentifyPage(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -227,6 +227,9 @@ class IdentifyPage(tk.Frame):
         home_button.grid(row=2, column=6, sticky=tk.S)
         button_frame.place(relx=1, rely=1, anchor=tk.SE)
         
+# David's Code End
+
+# Jaspreet's Code Start
 class MapPage(tk.Frame):
     
     def __init__(self, parent, controller):
@@ -384,19 +387,10 @@ class MapPage(tk.Frame):
         home_button.grid(row=2, column=6, sticky=tk.S)
         button_frame.place(relx=1, rely=1, anchor=tk.SE)
 
+# Jaspreet's Code End
 
+# Sunshine's Code Start
 con = sl.connect("berries.db")
-
-with con:
-    con.execute("""
-        CREATE TABLE IF NOT EXISTS BERRY (
-            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-            name TEXT,
-            description TEXT
-        );
-    """)
-
-
 
 with con:
     data = con.execute("SELECT * FROM BERRY")
@@ -508,6 +502,7 @@ class CatalogPage(tk.Frame):
         home_button.grid(row=2, column=6, sticky=tk.S)
         button_frame.place(relx=1, rely=1, anchor=tk.SE)
 
+# Sunshine's Code End
 
 if __name__ == "__main__":
     app = BerryApp()
