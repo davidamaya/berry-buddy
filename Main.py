@@ -9,6 +9,7 @@ from PIL import Image, ImageOps
 import numpy as np
 from tkinter import ttk
 import sqlite3 as sl
+from sunshine.Catalog import Catalog
 
 """Authorship
 Jeffin: Worked on Outline, transition between pages, and classes (BerryApp, PageOne, IdentifyPage, MapPage, CatalogPag) 
@@ -28,11 +29,13 @@ class BerryApp(tk.Tk):
         # will be raised above the others
         container = tk.Frame(self)
         container.pack(side="top", fill="both", expand=True)
-        container.grid_rowconfigure(0, minsize=600, weight=1)
-        container.grid_columnconfigure(0, minsize=1000, weight=1)
+        # container.grid_rowconfigure(0, minsize=600, weight=1)
+        # container.grid_columnconfigure(0, minsize=1000, weight=1)
+        container.grid_rowconfigure(0, minsize=1050, weight=1)
+        container.grid_columnconfigure(0, minsize=1050, weight=1)
 
         self.frames = {}
-        for F in (StartPage, PageOne, IdentifyPage, MapPage, CatalogPage):
+        for F in (StartPage, PageOne, IdentifyPage, MapPage, Catalog):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -129,7 +132,7 @@ class PageOne(tk.Frame):
         map_button = tk.Button(button_frame, text='Map', width=8, command=map, highlightbackground="#e2c7d8", foreground="black")
             
         def catalog():
-            controller.show_frame('CatalogPage')    
+            controller.show_frame('Catalog')
         catalog_button = tk.Button(button_frame, text='Catalog', width=8, command=catalog, highlightbackground="#e2c7d8", foreground="black")
         
         
@@ -397,120 +400,6 @@ class MapPage(tk.Frame):
 
 # Jaspreet's Code End
 
-# Sunshine's Code Start
-con = sl.connect("berries.db")
-
-with con:
-    data = con.execute("SELECT * FROM BERRY")
-    for row in data:
-        print(row)
-        
-class CatalogPage(tk.Frame):
-    
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg="#e2c7d8")
-        self.controller = controller
-  
-        label_frame = tk.Frame(self,bg="#95658B")
-        label_frame.pack(fill='both',expand=True)
-        
-        #Put your code here with label_frame. Take test 1 out 
-        label = ttk.Label(self, text="Berry Buddy Catalog")
-        label2 = ttk.Label(self, text="")
-        label3 = ttk.Label(self, text="")
-        button2 = tk.Button(self, text="Close", command=lambda: resetLabelText())
-
-        label.pack(pady=10)
-
-        # # Created entry box
-        myEntry = tk.Entry(self, font=('Helvetica', 20))
-        myEntry.pack()
-        #
-        # # Create a list box
-        myList = tk.Listbox(self, width=50)
-        myList.pack()
-
-        # Create a list of berries
-        berryNames = ['Gooseberry', 'Coffeeberry', 'Elderberry', 'Wild Grape', 'Cherry', 'Currant', 'Ground Cherry', 'Huckleberry',
-                      'Juniper', 'Nightshade', 'Raspberry', 'Serviceberry', 'Strawberry', 'Toyon']
-
-        # # Update the listbox
-        def update(data):
-            # Clear the listbox so it can reset each time a new berry is entered
-            myList.delete("0", "end")
-            # Add berries top listbox
-            # enumerate allows us to get the index
-            # loop goes through the list of berries in the box
-            for i, item in enumerate(data):
-                # i is the index and item is the berry itself
-                myList.insert(i, item)
-
-        # Update entry box with listbox clicked
-        def fillout(event):
-            # Deletes anything in the entry box
-            myEntry.delete(0, "end")
-
-            # Add clicked list item to entry box
-            myEntry.insert(0, myList.get("anchor"))
-            global BERRY_NAME
-            BERRY_NAME = myEntry.get()
-            if BERRY_NAME in berryNames:
-                with con:
-                    data = con.execute(f"SELECT * FROM BERRY WHERE name == '{myEntry.get()}'")
-                    result = data.fetchone()
-                    if result:
-                        label2.pack(pady=20)
-                        label2.config(text=result[1])
-                        label3.config(text=result[2])
-                        label3.pack(pady=20)
-                        # breaking... come back to fix because it is not destroying the labels, instead it is overlapping
-                        button2.pack()
-
-        # # Create function to check entry vs listbox
-        def check(event):
-            # Grab what was typed
-            typed = myEntry.get()
-            if typed == '':
-                # The berryNames list will show up if there is nothing in the search bar
-                data = berryNames
-            else:
-                data = []
-                for item in berryNames:
-                    if typed.lower() in item.lower():
-                        data.append(item)
-
-            # Updates our listbox with selected items
-            update(data)
-
-        #
-        # # Add berryNames to list
-        update(berryNames)
-        #
-        # # Create a binding on the listbox onclick... predicts entry based on what is in the listbox
-        myList.bind('<<ListboxSelect>>', fillout)
-        #
-        # # Create a binding on the entry box
-        myEntry.bind('<KeyRelease>', check)
-
-        def resetLabelText():
-            label2.config(text='')
-            label3.config(text='')
-            myEntry.delete("0", "end")
-
-        button_frame = tk.Frame(self, bg="#95658B")
-        button_frame.pack(fill='both',expand=True)
-        def back():
-            resetLabelText()
-            controller.show_frame('PageOne')
-        
-        home_button = tk.Button(button_frame, text='Home', command=back, highlightbackground="#e2c7d8", foreground="black")
-        
-        button1 = Button(button_frame, text="Homepage", width=8,
-                         highlightbackground="pink", foreground="black", command=back)
-        home_button.grid(row=2, column=6, sticky=tk.S)
-        button_frame.place(relx=1, rely=1, anchor=tk.SE)
-
-# Sunshine's Code End
 
 if __name__ == "__main__":
     app = BerryApp()
