@@ -1,20 +1,18 @@
-
-import tkinter as tk                
+import tkinter as tk          
 from tkinter import Button, font  as tkfont
-from tkinter.constants import N, VERTICAL, BOTH, RIGHT, LEFT, Y, END
-from PIL import ImageTk, Image
+from tkinter.constants import CENTER, E, N, NW, TOP, VERTICAL, BOTH, RIGHT, LEFT, W, Y, END
+from PIL import ImageTk, Image, ImageOps
 from tkinter import filedialog
 from keras.models import load_model
-from PIL import Image, ImageOps
 import numpy as np
 from tkinter import ttk
 import sqlite3 as sl
 
 """Authorship
-Jeffin: Worked on Outline, transition between pages, and classes (BerryApp, PageOne, IdentifyPage, MapPage, CatalogPag) 
-David: Worked on Identify, trained and implemented the model
-Sunshine: Worked on Catalog and DB
-Jaspreet: Worked on Map and DB"""
+Jeffin: Worked on Outline, transition between pages, and classes (BerryApp, PageOne, About, Help 1-3, Identify, Map, and Catalog Page) 
+David: Worked on Identify page, trained and implemented the model
+Sunshine: Worked on Catalog page and DB
+Jaspreet: Worked on Map  pageand DB"""
 
 
 #Jeffin code start
@@ -32,7 +30,7 @@ class BerryApp(tk.Tk):
         container.grid_columnconfigure(0, minsize=1000, weight=1)
 
         self.frames = {}
-        for F in (StartPage, PageOne, IdentifyPage, MapPage, CatalogPage):
+        for F in (StartPage, PageOne, AboutPage, HelpPage, HelpPage1, HelpPage2, HelpPage3, IdentifyPage, MapPage, CatalogPage):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
@@ -49,17 +47,17 @@ class BerryApp(tk.Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
-#space in StartPage (label and logo)
-def space(self):
-    space_label = tk.Label(self, height=4, bg='#e2c7d8')
-    space_label.pack()
+class LineSpaces:
+    #space in StartPage (label and logo)
+    def space(self):
+        space_label = tk.Label(self, height=3, bg='#e2c7d8')
+        space_label.pack()
 
-#space in StartPage (logo and btn)
-def btnspace(self):
-    space_label = tk.Label(self, height=2, bg='#e2c7d8')
-    space_label.pack()
-    
-    
+    #space in StartPage (logo and btn)
+    def btnspace(self):
+        space_label = tk.Label(self, height=2, bg='#e2c7d8')
+        space_label.pack()
+
 class StartPage(tk.Frame):
 
     def __init__(self, parent, controller):
@@ -67,22 +65,24 @@ class StartPage(tk.Frame):
         self.controller = controller
         self.controller.title("BerryBuddy.exe")
         
-        space(self)
-        
-        disclamer_label = tk.Label(self, fg='#F2F2F2', bg="#0D0D0D", text="Disclamer: \n This application is not intended to supply toxicological advice to anyone. \n The creators of this application have referenced sources believed to be reliable in an effort to confirm the accuracy and completeness of the presented herein. \n However, none of the creators warrant that the information is in every respect accurate or complete, and \n they are nor responsible for errors or omissions or for any consequences from application of the information in this book. \n" \
-                                             "Never eat any wild plant until you have positively identified the plant as edible. \n There is no substitute for the knowledge of a trained botanist or horticulturist for plant identification. \n In cases of accidental exposure or ingestion of toxic or poisonous berry varieties, contact a Poison Control Center (1-800-222-1222).")
+        LineSpaces.space(self)
+
+        disclamer_label1 = tk.Label(self, fg='#F2F2F2', bg="#95658B", text="DISCLAMER", width=127, justify=CENTER)
+        disclamer_label = tk.Label(self, fg='#F2F2F2', bg="#95658B", text="This application is not intended to supply toxicological advice to anyone. The creators of this application have referenced sources believed to be reliable in an effort to confirm the accuracy and completeness of the presented herein. However, none of the creators warrant that the information is in every respect accurate or complete, and  they are nor responsible for errors or omissions or for any consequences from application of the information in this book. Never eat any wild plant until you have positively identified the plant as edible. There is no substitute for the knowledge of a trained botanist or horticulturist for plant identification. In cases of accidental exposure or ingestion of toxic or poisonous berry varieties, contact a Poison Control Center (1-800-222-1222).", 
+        wraplength=895, width=127, justify=LEFT)
+        disclamer_label1.pack()
         disclamer_label.pack()
         
-        btnspace(self)
+        LineSpaces.btnspace(self)
         
         logo_photo = tk.PhotoImage(file='berrylogo.gif')
         logo_photo_label = tk.Label(self,image=logo_photo, bg="#e2c7d8")
         logo_photo_label.pack()
         logo_photo_label.image = logo_photo
         
-        btnspace(self)
+        LineSpaces.btnspace(self)
         
-        terms_label = tk.Label(self, text='Type "Agree" to get started', bg='#3d3d5c', fg='white')
+        terms_label = tk.Label(self, text='Type "Agree" to get started', bg='#e2c7d8', fg='#0D0D0D')
         terms_label.pack(pady=10)
 
 
@@ -99,7 +99,7 @@ class StartPage(tk.Frame):
            else:
                incorrect_term_label['text']='User has to Agree to move on.'
         
-        btnspace(self)
+        LineSpaces.btnspace(self)
 
         getStarted_button = Button(self, text="Get Started!", command=check_password, highlightbackground='#e2c7d8', foreground="black", height=3)
         getStarted_button.pack()
@@ -108,16 +108,15 @@ class StartPage(tk.Frame):
         incorrect_term_label.pack(fill='both',expand=True)
         
       
-
 class PageOne(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg='#e2c7d8')
         self.controller = controller
 
+        #button frame hosting identify, map 
         button_frame = tk.Frame(self, bg="#e2c7d8")
         button_frame.pack(fill='both')
-        
         
         def identify():
             controller.show_frame('IdentifyPage')
@@ -132,7 +131,6 @@ class PageOne(tk.Frame):
             controller.show_frame('CatalogPage')    
         catalog_button = tk.Button(button_frame, text='Catalog', width=8, command=catalog, highlightbackground="#e2c7d8", foreground="black")
         
-        
         logo_photo = tk.PhotoImage(file='berrylogo.gif')
         logo_photo_label = tk.Label(button_frame,image=logo_photo, bg="#e2c7d8")
         logo_photo_label.grid(row=4, column=4, sticky=tk.W, padx=20, rowspan=2)
@@ -143,7 +141,163 @@ class PageOne(tk.Frame):
         catalog_button.grid(row=5, column=6, sticky=tk.S)
 
         button_frame.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+
+        ######start of menu bar frame######
+        menubar_frame = tk.Frame(self, bg="#e2c7d8")
+        menubar_frame.pack(fill='both',expand=True)
+
+        #about button (menu bar)
+        def about():
+            controller.show_frame('AboutPage')
+        about_button = tk.Button(menubar_frame, text='About', width=8, command=about, highlightbackground="#e2c7d8", foreground="black")
+        about_button.grid(row=0, column=0, sticky=E)
+
+        #help button(menu bar)
+        def help():
+            controller.show_frame('HelpPage')
+        help_button = tk.Button(menubar_frame, text='Help', width=8, command=help, highlightbackground="#e2c7d8", foreground="black")
+        help_button.grid(row=0, column=1, padx=6)
+
+        menubar_frame.place(relx=0.079, rely=0.015, anchor=N)
+
+class AboutPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg="#e2c7d8")
+        self.controller = controller
+
+        LineSpaces.space(self)
+            
+        about_label = tk.Label(self, fg='#F2F2F2', bg="#95658B", text="""About \n 
+BerryBuddy is a desktop application that allows the users to identify berries through artificial intelligence.\n 
+BerryBuddy utilizes machine learning libraries in Python to train a neural net to identify and differentiate between the various berries endemic to California. 
+Our program is able to identify berries in user-provided images, and relay relevant information. 
+BerryBuddy will additionally be able to extract geolocation data from a user’s image and map the berries’ location on a map for future reference; diminishing the need for users to continuously take images of the same berry bush. 
+If that data is not available, the user will also have the option to manually input that information, and add their own markers. Our program will also serve as a reference book, and will contain a catalog of all the berries commonly found in California, highlighting their identifying features.""",
+width=100, height=26, wraplength=500, justify=LEFT, font=('13'))
+        about_label.pack()
+
+        #####button frame#####
+        button_frame = tk.Frame(self, bg="#95658B")
+        button_frame.pack(fill='both',expand=True)
+
+        def back():
+            controller.show_frame('PageOne')
         
+        home_button = tk.Button(button_frame, text='Home', width=8, command=back, highlightbackground="#e2c7d8", foreground="black")
+
+        home_button.grid(row=2, column=6, sticky=tk.S)
+        button_frame.place(relx=1, rely=1, anchor=tk.SE)
+
+class HelpPage(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg="#e2c7d8")
+        self.controller = controller
+
+        LineSpaces.space(self)    
+        help_label = tk.Label(self, fg='#F2F2F2', bg="#95658B", text="""Current page (visited from): Homepage \n 
+From homepage users can explore or choose their desired module to visit.\n
+1. The IDENTIFY button allows the user to visit the identify page which is able to identify berries in user-provided images.\n 
+2. The MAP button allows the users to add, delete, and edit their own markers.\n
+3. The CATALOG button allows the user to explore more information on the berries that's commonly found in California.\n
+4. The HOME button allows the user to return to the homepage.""",
+width=100, height=26, wraplength=500, justify=LEFT, font=('13'))
+        help_label.pack()
+
+        #####button frame#####
+        button_frame = tk.Frame(self, bg="#95658B")
+        button_frame.pack(fill='both',expand=True)
+
+        def back():
+            controller.show_frame('PageOne')
+        
+        home_button = tk.Button(button_frame, text='Home', width=8, command=back, highlightbackground="#e2c7d8", foreground="black")
+
+        home_button.grid(row=2, column=6, sticky=tk.S)
+        button_frame.place(relx=1, rely=1, anchor=tk.SE)
+
+class HelpPage1(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg="#e2c7d8")
+        self.controller = controller
+
+        LineSpaces.space(self)    
+        disclamer_label = tk.Label(self, fg='#F2F2F2', bg="#95658B", text="""Current page (visited from): Identify \n 
+The Identify module is able to identify berries in user-provided images, and relay relevant information. \n
+1. Click the Upload button to open File Explorer/Finder.
+2. Navigate to the desired location that has the berry image.
+3. Choose the picture and click open for the application to identify the berry.
+4. The Back button on bottom right allows the user to return back to the Identify page.
+5. The HOME button allows the user to return to the homepage""",
+width=100, height=26, wraplength=500, justify=LEFT, font=('13'))
+        disclamer_label.pack()
+
+        #####button frame#####
+        button_frame = tk.Frame(self, bg="#95658B")
+        button_frame.pack(fill='both',expand=True)
+
+        def back():
+            controller.show_frame('IdentifyPage')
+        
+        home_button = tk.Button(button_frame, text='Back', command=back, width=8, highlightbackground="#e2c7d8", foreground="black")
+
+        home_button.grid(row=2, column=6, sticky=tk.S)
+        button_frame.place(relx=1, rely=1, anchor=tk.SE)
+
+class HelpPage2(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg="#e2c7d8")
+        self.controller = controller
+
+        LineSpaces.space(self)    
+        help2_label = tk.Label(self, fg='#F2F2F2', bg="#95658B", text="""Current page (visited from): Map \n 
+The Map module allows the users to add, delete, and edit their own markers. \n
+1. To add marker click on the Add Marker button. The user will be promted to a new window with three textboxes to fill in the corresponding information: Marker Name, Latitude, Longitude.
+2. After adding the marker close the window and the next button in the list is the Delete Marker button. Clicking the Delete Marker button will prompt a new window that lets the user delete specific marker or all marker.
+3. Next button on the list is the List button which lets the user view all the marker they have made so far.
+4. The Back button on bottom right allows the user to return back to the Map page.
+5. The HOME button allows the user to return to the homepage""",
+width=100, height=26, wraplength=500, justify=LEFT, font=('13'))
+        help2_label.pack()
+
+        #####button frame#####
+        button_frame = tk.Frame(self, bg="#95658B")
+        button_frame.pack(fill='both',expand=True)
+
+        def back():
+            controller.show_frame('MapPage')
+        
+        home_button = tk.Button(button_frame, text='Map', command=back, width=8, highlightbackground="#e2c7d8", foreground="black")
+
+        home_button.grid(row=2, column=6, sticky=tk.S)
+        button_frame.place(relx=1, rely=1, anchor=tk.SE)
+
+class HelpPage3(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg="#e2c7d8")
+        self.controller = controller
+
+        LineSpaces.space(self)    
+        help3_label = tk.Label(self, fg='#F2F2F2', bg="#95658B", text="""Current page (visited from): Catalog \n 
+The Catalog module allows the user to explore more information on the berries that's commonly found in California. \n
+1. User can either look through and click on the name of the berry of their choice or they can search the berry up.
+2. Click on the name of the chosen berry to view a short and in-depth information on them.
+3. The Back button on bottom right allows the user to return back to the Catalog page.
+4. The HOME button allows the user to return to the homepage.""",
+width=100, height=26, wraplength=500, justify=LEFT, font=('13'))
+        help3_label.pack()
+
+        #####button frame#####
+        button_frame = tk.Frame(self, bg="#95658B")
+        button_frame.pack(fill='both',expand=True)
+
+        def back():
+            controller.show_frame('CatalogPage')
+        
+        home_button = tk.Button(button_frame, text='Back', width=8, command=back, highlightbackground="#e2c7d8", foreground="black")
+
+        home_button.grid(row=2, column=6, sticky=tk.S)
+        button_frame.place(relx=1, rely=1, anchor=tk.SE)
+
 
 # David's Code Start
 class IdentifyPage(tk.Frame):
@@ -151,8 +305,22 @@ class IdentifyPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg="#e2c7d8")
         self.controller = controller
+
+        ######start of menu bar frame######
+        menubar_frame = tk.Frame(self, bg="#e2c7d8")
+        menubar_frame.pack(fill='both',expand=True)
+
+        #help button(menu bar)
+        def help1():
+            controller.show_frame('HelpPage1')
+        help_button = tk.Button(menubar_frame, text='Help', width=8, command=help1, highlightbackground="#e2c7d8", foreground="black")
+        help_button.grid(row=0, column=0, sticky=E, )
+
+        menubar_frame.place(relx=0.038, rely=0.010, anchor=N)
         
+        LineSpaces.btnspace(self)
         
+        #####identify label frame#####
         label_frame = tk.Frame(self,bg="#95658B")
         label_frame.pack(fill='both',expand=True)
         
@@ -221,17 +389,15 @@ class IdentifyPage(tk.Frame):
                         fg="#0D0D0D", bg="#E2C7D8", command=load_img)
         chose_image.pack(side=tk.BOTTOM)    
 
-
+        #####button frame#####
         button_frame = tk.Frame(self, bg="#95658B")
         button_frame.pack(fill='both',expand=True)
 
         def back():
             controller.show_frame('PageOne')
         
-        home_button = tk.Button(button_frame, text='Home', command=back, highlightbackground="#e2c7d8", foreground="black")
-        
-        button1 = Button(button_frame, text="Homepage", width=8,
-                         highlightbackground="pink", foreground="black", command=back)
+        home_button = tk.Button(button_frame, text='Home', width=8, command=back, highlightbackground="#e2c7d8", foreground="black")
+
         home_button.grid(row=2, column=6, sticky=tk.S)
         button_frame.place(relx=1, rely=1, anchor=tk.SE)
         
@@ -244,6 +410,21 @@ class MapPage(tk.Frame):
         tk.Frame.__init__(self, parent, bg="#e2c7d8")
         self.controller = controller
         
+        ######start of menu bar frame######
+        menubar_frame = tk.Frame(self, bg="#e2c7d8")
+        menubar_frame.pack(fill='both',expand=True)
+
+        #help button(menu bar)
+        def help2():
+            controller.show_frame('HelpPage2')
+        help_button = tk.Button(menubar_frame, text='Help', width=8, command=help2, highlightbackground="#e2c7d8", foreground="black")
+        help_button.grid(row=0, column=0, sticky=E, )
+
+        menubar_frame.place(relx=0.038, rely=0.010, anchor=N)
+        
+        LineSpaces.btnspace(self)
+        
+        #####map label frame#####
         label_frame = tk.Frame(self,bg="#95658B")
         label_frame.pack(fill='both',expand=True)
 
@@ -334,8 +515,6 @@ class MapPage(tk.Frame):
                 conn.close()   
 
         def ListWindow():
-       
-            
             
             listmarker()   
             print_records
@@ -373,6 +552,7 @@ class MapPage(tk.Frame):
                     print_records += str(record[3]) + "\t" + str(record[0])+ " " + " " + str(record[1]) + " " + " " + str(record[2]) +"\n"
                 conn.close()
         #map buttons
+        
         AddMarker = tk.Button(label_frame, width=11, height=1, bg='#E2C7D8', text="Add Marker", command = AddmarkWindow)
         AddMarker.grid(column=0, row=0, padx=10, pady=5) 
 
@@ -382,16 +562,14 @@ class MapPage(tk.Frame):
         List = tk.Button(label_frame, width=11, height=1, bg='#E2C7D8' ,text="List", command= ListWindow)
         List.grid(column=0, row=2, padx=10, pady=5) 
         
-
+        #button frame hosting the back button
         button_frame = tk.Frame(self, bg="#95658B")
         button_frame.pack(fill='both',expand=True)
         def back():
             controller.show_frame('PageOne')
         
-        home_button = tk.Button(button_frame, text='Home', command=back, highlightbackground="#e2c7d8", foreground="black")
-        
-        button1 = Button(button_frame, text="Homepage", width=8,
-                         highlightbackground="pink", foreground="black", command=back)
+        home_button = tk.Button(button_frame, text='Home', command=back, width=8, highlightbackground="#e2c7d8", foreground="black")
+
         home_button.grid(row=2, column=6, sticky=tk.S)
         button_frame.place(relx=1, rely=1, anchor=tk.SE)
 
@@ -410,24 +588,38 @@ class CatalogPage(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg="#e2c7d8")
         self.controller = controller
-  
+
+        ######start of menu bar frame######
+        menubar_frame = tk.Frame(self, bg="#e2c7d8")
+        menubar_frame.pack(fill='both',expand=True)
+
+        #help button(menu bar)
+        def help3():
+            controller.show_frame('HelpPage3')
+        help_button = tk.Button(menubar_frame, text='Help', width=8, command=help3, highlightbackground="#e2c7d8", foreground="black")
+        help_button.grid(row=0, column=0, sticky=E, )
+
+        menubar_frame.place(relx=0.038, rely=0.010, anchor=N)
+        
+        LineSpaces.btnspace(self)
+        
+        #####map label frame#####
         label_frame = tk.Frame(self,bg="#95658B")
         label_frame.pack(fill='both',expand=True)
         
-        #Put your code here with label_frame. Take test 1 out 
-        label = ttk.Label(self, text="Berry Buddy Catalog")
-        label2 = ttk.Label(self, text="")
-        label3 = ttk.Label(self, text="")
-        button2 = tk.Button(self, text="Close", command=lambda: resetLabelText())
+        label = ttk.Label(label_frame, text="Berry Buddy Catalog")
+        label2 = ttk.Label(label_frame, text="")
+        label3 = ttk.Label(label_frame, text="")
+        button2 = tk.Button(label_frame, text="Close", command=lambda: resetLabelText())
 
         label.pack(pady=10)
 
         # # Created entry box
-        myEntry = tk.Entry(self, font=('Helvetica', 20))
+        myEntry = tk.Entry(label_frame, font=('Helvetica', 20))
         myEntry.pack()
         #
         # # Create a list box
-        myList = tk.Listbox(self, width=50)
+        myList = tk.Listbox(label_frame, width=50)
         myList.pack()
 
         # Create a list of berries
@@ -497,16 +689,15 @@ class CatalogPage(tk.Frame):
             label3.config(text='')
             myEntry.delete("0", "end")
 
+        #button frame hosting the back button
         button_frame = tk.Frame(self, bg="#95658B")
         button_frame.pack(fill='both',expand=True)
         def back():
             resetLabelText()
             controller.show_frame('PageOne')
         
-        home_button = tk.Button(button_frame, text='Home', command=back, highlightbackground="#e2c7d8", foreground="black")
-        
-        button1 = Button(button_frame, text="Homepage", width=8,
-                         highlightbackground="pink", foreground="black", command=back)
+        home_button = tk.Button(button_frame, text='Home', command=back, width=8, highlightbackground="#e2c7d8", foreground="black")
+ 
         home_button.grid(row=2, column=6, sticky=tk.S)
         button_frame.place(relx=1, rely=1, anchor=tk.SE)
 
